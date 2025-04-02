@@ -718,8 +718,8 @@
                         <ul class="space-y-3">
                             <li><a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300"><i class="fas fa-home mr-2 text-orange-500"></i>Inicio</a></li>
                             <li><a href="#about" class="text-gray-400 hover:text-orange-400 transition-colors duration-300"><i class="fas fa-info-circle mr-2 text-orange-500"></i>Sobre el Encuentro</a></li>
-                            <li><a href="#schedule" class="text-gray-400 hover:text-orange-400 transition-colors duration-300"><i class="fas fa-calendar-alt mr-2 text-orange-500"></i>Cronograma</a></li>
                             <li><a href="#categories" class="text-gray-400 hover:text-orange-400 transition-colors duration-300"><i class="fas fa-tags mr-2 text-orange-500"></i>Categorías</a></li>
+                            <li><a href="#schedule" class="text-gray-400 hover:text-orange-400 transition-colors duration-300"><i class="fas fa-calendar-alt mr-2 text-orange-500"></i>Cronograma</a></li>
                             <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-orange-400 transition-colors duration-300"><i class="fas fa-sign-in-alt mr-2 text-orange-500"></i>Iniciar sesión</a></li>
                         </ul>
                     </div>

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calificaciones', function (Blueprint $table) {
+        Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('proyecto_id')->constrained('proyectos')->onDelete('cascade');
-            $table->foreignId('evaluador_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
+            $table->foreignId('evaluator_id')->constrained('users')->onDelete('cascade');
             $table->enum('tipo', ['escrita', 'oral', 'final']);
             $table->decimal('puntaje', 2, 1)->check('puntaje >= 0 AND puntaje <= 5');
             $table->text('observaciones')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calificaciones');
+        Schema::dropIfExists('grades');
     }
 };
