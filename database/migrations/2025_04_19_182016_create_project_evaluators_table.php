@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('project_evaluators', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('evaluator_id')->constrained('users')->onDelete('restrict');
+            $table->foreignId('assigned_by')->constrained('users')->onDelete('restrict');
+            $table->timestamp('assigned_date');
             $table->timestamps();
+            
+            $table->unique(['project_id', 'evaluator_id']);
         });
     }
 

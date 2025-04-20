@@ -100,9 +100,10 @@ class Project extends Model
                 $query->where('sequence_order', 2);
             });
             
-        }
-        public function calculateFinalScore()
-        {
+    }
+    
+    public function calculateFinalScore()
+    {
         $writtenPhaseId = EvaluationPhase::where('sequence_order', 1)->first()->id;
         $oralPhaseId = EvaluationPhase::where('sequence_order', 2)->first()->id;
         
@@ -126,5 +127,6 @@ class Project extends Model
         
         return $finalScore;
     }
+        
 
 }

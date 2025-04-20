@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('project_status_history', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_status_id')->constrained()->onDelete('restrict');
+            $table->foreignId('changed_by')->constrained('users')->onDelete('restrict');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

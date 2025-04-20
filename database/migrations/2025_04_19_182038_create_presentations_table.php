@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('presentations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->string('location');
+            $table->date('scheduled_date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
         });
     }

@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('evaluator_id')->constrained('users')->onDelete('restrict');
+            $table->foreignId('evaluation_phase_id')->constrained()->onDelete('restrict');
+            $table->decimal('total_score', 5, 2)->nullable();
+            $table->text('comments')->nullable();
+            $table->boolean('is_completed')->default(false);
+            $table->timestamp('evaluation_date')->nullable();
             $table->timestamps();
+            
+            $table->unique(['project_id', 'evaluator_id', 'evaluation_phase_id']);
         });
     }
 

@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('evaluation_scores', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('evaluation_id')->constrained()->onDelete('cascade');
+            $table->foreignId('rubric_criteria_id')->constrained()->onDelete('restrict');
+            $table->decimal('score', 5, 2);
+            $table->text('comments')->nullable();
             $table->timestamps();
+            
+            $table->unique(['evaluation_id', 'rubric_criteria_id']);
         });
     }
 

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('rubric_criteria', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('evaluation_phase_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->decimal('max_score', 5, 2);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

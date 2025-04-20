@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('evaluation_phases', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->integer('sequence_order');
+            $table->decimal('weight', 5, 2)->comment('Percentage weight in final score');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

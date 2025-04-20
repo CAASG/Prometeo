@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->enum('certificate_type', ['participant', 'winner', 'evaluator']);
+            $table->timestamp('generation_date');
+            $table->string('certificate_number')->unique();
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }

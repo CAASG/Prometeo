@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('project_themes_map', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_theme_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+            
+            $table->unique(['project_id', 'project_theme_id']);
         });
     }
 
