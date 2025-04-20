@@ -13,11 +13,6 @@ return new class extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->foreignId('evaluator_id')->constrained('users')->onDelete('cascade');
-            $table->enum('tipo_certificado', ['participante', 'ganador']);
-            $table->string('ruta_certificado');
-            $table->date('fecha_emision');
             $table->timestamps();
         });
     }
