@@ -1,4 +1,4 @@
-# <img src="https://img.icons8.com/color/48/000000/fire-element--v1.png" width="36" height="36"/> Prometeo - Plataforma de Gestión de Encuentros de Semilleros
+# <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/fire.svg" width="36" height="36"/> Prometeo - Plataforma de Gestión de Encuentros de Semilleros
 
 <p align="center">
   <img src="https://via.placeholder.com/800x400/FF7F50/FFFFFF?text=Prometeo" alt="Prometeo Banner" width="800"/>
@@ -9,6 +9,7 @@
   <a href="#"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License"></a>
   <a href="#"><img src="https://img.shields.io/badge/PHP-8.2-777BB4.svg?style=flat-square&logo=php&logoColor=white" alt="PHP"></a>
   <a href="#"><img src="https://img.shields.io/badge/Laravel-12.x-FF2D20.svg?style=flat-square&logo=laravel&logoColor=white" alt="Laravel"></a>
+  <a href="#"><img src="https://img.shields.io/badge/PostgreSQL-14+-336791.svg?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL"></a>
 </p>
 
 Prometeo es una plataforma web desarrollada para gestionar encuentros académicos y proyectos de investigación. La aplicación permite a los usuarios registrar proyectos de investigación en diferentes categorías, realizar evaluaciones, y administrar todo el proceso desde la postulación hasta la presentación final.
@@ -16,30 +17,12 @@ Prometeo es una plataforma web desarrollada para gestionar encuentros académico
 ## ✨ Tecnologías Utilizadas
 
 <p align="center">
-  <a href="https://laravel.com" target="_blank">
-    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://livewire.laravel.com" target="_blank">
-    <img src="https://github.com/livewire/livewire/raw/main/art/banner.png" width="200" alt="Livewire Logo">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://filamentphp.com" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/77367590?s=200&v=4" width="70" alt="Filament Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://jetstream.laravel.com" target="_blank">
-    <img src="https://repository-images.githubusercontent.com/289351063/2b0ab080-7e11-11eb-9402-6b82ad5a560c" width="130" alt="Jetstream Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://tailwindcss.com" target="_blank">
-    <img src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg" width="70" alt="TailwindCSS Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://alpinejs.dev" target="_blank">
-    <img src="https://alpinejs.dev/alpine_long.svg" width="130" alt="Alpine.js Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.mysql.com" target="_blank">
-    <img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" width="100" alt="MySQL Logo">
-  </a>
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/laravel.svg" width="70" alt="Laravel">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/livewire.svg" width="70" alt="Livewire">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/symfony.svg" width="70" alt="Filament">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/tailwindcss.svg" width="70" alt="TailwindCSS">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/alpinejs.svg" width="70" alt="AlpineJS">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/postgresql.svg" width="70" alt="PostgreSQL">
 </p>
 
 - **Laravel 12.x** - Framework PHP moderno y elegante 
@@ -48,7 +31,7 @@ Prometeo es una plataforma web desarrollada para gestionar encuentros académico
 - **Jetstream** - Sistema de autenticación y gestión de equipos
 - **TailwindCSS** - Framework CSS para diseños personalizados
 - **Alpine.js** - Framework JavaScript minimalista
-- **MySQL/MariaDB** - Sistema de gestión de bases de datos relacional
+- **PostgreSQL** - Sistema de gestión de bases de datos relacional
 
 ## 🚀 Funcionalidades Principales
 
@@ -68,44 +51,39 @@ Prometeo es una plataforma web desarrollada para gestionar encuentros académico
 
 <table>
   <tr>
-    <td>
-      <img src="https://www.php.net/images/logos/new-php-logo.svg" width="40" alt="PHP Logo">
+    <td align="center" width="80">
+      <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/php.svg" width="40" alt="PHP">
     </td>
     <td>PHP 8.2 o superior</td>
   </tr>
   <tr>
-    <td>
-      <img src="https://getcomposer.org/img/logo-composer-transparent.png" width="40" alt="Composer Logo">
+    <td align="center">
+      <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/composer.svg" width="40" alt="Composer">
     </td>
     <td>Composer</td>
   </tr>
   <tr>
-    <td>
-      <img src="https://nodejs.org/static/images/logo.svg" width="40" alt="Node.js Logo">
+    <td align="center">
+      <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/nodejs.svg" width="40" alt="NodeJS">
     </td>
     <td>Node.js y NPM</td>
   </tr>
   <tr>
-    <td>
-      <img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" width="40" alt="MySQL Logo">
+    <td align="center">
+      <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/postgresql.svg" width="40" alt="PostgreSQL">
     </td>
-    <td>MySQL 8.0 o MariaDB 10.5+</td>
+    <td>PostgreSQL 14.0+</td>
   </tr>
 </table>
 
 ### Extensiones PHP requeridas:
 
-- BCMath
-- Ctype
-- cURL
-- DOM
-- Fileinfo
-- JSON
-- Mbstring
-- OpenSSL
-- PDO
-- Tokenizer
-- XML
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/json.svg" width="25" alt="JSON">&nbsp;JSON&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/xml.svg" width="25" alt="XML">&nbsp;XML&nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@master/public/logos/curl.svg" width="25" alt="cURL">&nbsp;cURL&nbsp;&nbsp;
+  BCMath, Ctype, DOM, Fileinfo, Mbstring, OpenSSL, PDO, Tokenizer
+</p>
 
 ## 💻 Instalación
 
@@ -139,12 +117,12 @@ php artisan key:generate
 
 ### 5. Configurar la base de datos en el archivo .env
 
-```
-DB_CONNECTION=mysql
+```bash
+DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
-DB_PORT=3306
+DB_PORT=5432
 DB_DATABASE=prometeo
-DB_USERNAME=root
+DB_USERNAME=postgres
 DB_PASSWORD=
 ```
 
@@ -187,3 +165,9 @@ Si deseas contribuir al proyecto, por favor:
 ## 📄 Licencia
 
 Este proyecto está licenciado bajo [MIT License](LICENSE).
+
+<!-- CDN for the coloured icons -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/dheereshagrwal/coloured-icons@1.9.0/src/app/ci.min.css"
+/>
