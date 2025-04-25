@@ -1,46 +1,8 @@
-# <img src="https://img.icons8.com/color/48/000000/fire-element--v1.png" width="36" height="36"/> Prometeo - Plataforma de Gestión de Encuentros de Semilleros
-
-<p align="center">
-  <img src="https://via.placeholder.com/800x400/FF7F50/FFFFFF?text=Prometeo" alt="Prometeo Banner" width="800"/>
-</p>
-
-<p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/version-1.0.0-blue.svg?style=flat-square" alt="Version"></a>
-  <a href="#"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License"></a>
-  <a href="#"><img src="https://img.shields.io/badge/PHP-8.2-777BB4.svg?style=flat-square&logo=php&logoColor=white" alt="PHP"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Laravel-12.x-FF2D20.svg?style=flat-square&logo=laravel&logoColor=white" alt="Laravel"></a>
-</p>
+# Prometeo - Plataforma de Gestión de Encuentros de Semilleros
 
 Prometeo es una plataforma web desarrollada para gestionar encuentros académicos y proyectos de investigación. La aplicación permite a los usuarios registrar proyectos de investigación en diferentes categorías, realizar evaluaciones, y administrar todo el proceso desde la postulación hasta la presentación final.
 
 ## ✨ Tecnologías Utilizadas
-
-<p align="center">
-  <a href="https://laravel.com" target="_blank">
-    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://livewire.laravel.com" target="_blank">
-    <img src="https://github.com/livewire/livewire/raw/main/art/banner.png" width="200" alt="Livewire Logo">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://filamentphp.com" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/77367590?s=200&v=4" width="70" alt="Filament Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://jetstream.laravel.com" target="_blank">
-    <img src="https://repository-images.githubusercontent.com/289351063/2b0ab080-7e11-11eb-9402-6b82ad5a560c" width="130" alt="Jetstream Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://tailwindcss.com" target="_blank">
-    <img src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg" width="70" alt="TailwindCSS Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://alpinejs.dev" target="_blank">
-    <img src="https://alpinejs.dev/alpine_long.svg" width="130" alt="Alpine.js Logo">
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.mysql.com" target="_blank">
-    <img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" width="100" alt="MySQL Logo">
-  </a>
-</p>
 
 - **Laravel 12.x** - Framework PHP moderno y elegante 
 - **Livewire 3.x** - Para interfaces dinámicas y reactivas
@@ -48,13 +10,9 @@ Prometeo es una plataforma web desarrollada para gestionar encuentros académico
 - **Jetstream** - Sistema de autenticación y gestión de equipos
 - **TailwindCSS** - Framework CSS para diseños personalizados
 - **Alpine.js** - Framework JavaScript minimalista
-- **MySQL/MariaDB** - Sistema de gestión de bases de datos relacional
+- **PostgreSQL** - Sistema de gestión de bases de datos relacional
 
 ## 🚀 Funcionalidades Principales
-
-<p align="center">
-  <img src="https://via.placeholder.com/700x300/4169E1/FFFFFF?text=Dashboard+Prometeo" alt="Dashboard Preview" width="700"/>
-</p>
 
 - 👥 Registro y gestión de usuarios (estudiantes, evaluadores, administradores)
 - 📝 Postulación y seguimiento de proyectos de investigación
@@ -87,9 +45,9 @@ Prometeo es una plataforma web desarrollada para gestionar encuentros académico
   </tr>
   <tr>
     <td>
-      <img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" width="40" alt="MySQL Logo">
+      <img src="https://www.postgresql.org/media/img/about/press/elephant.png" width="40" alt="PostgreSQL Logo">
     </td>
-    <td>MySQL 8.0 o MariaDB 10.5+</td>
+    <td>PostgreSQL 12+ </td>
   </tr>
 </table>
 
@@ -140,12 +98,12 @@ php artisan key:generate
 ### 5. Configurar la base de datos en el archivo .env
 
 ```
-DB_CONNECTION=mysql
+DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
-DB_PORT=3306
+DB_PORT=5432
 DB_DATABASE=prometeo
-DB_USERNAME=root
-DB_PASSWORD=
+DB_USERNAME=postgres
+DB_PASSWORD=password
 ```
 
 ### 6. Ejecutar migraciones y seeders
