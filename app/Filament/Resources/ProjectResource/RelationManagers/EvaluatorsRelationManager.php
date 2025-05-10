@@ -60,7 +60,7 @@ class EvaluatorsRelationManager extends RelationManager
                         $action->getRecordSelect()
                             ->label('Evaluator')
                             // Filter the selectable users to only those with the 'evaluator' role
-                            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('roles', fn(Builder $q) => $q->where('name', 'evaluator'))),
+                            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('roles', fn(Builder $q) => $q->whereIn('name', ['evaluator'])))
                         // No need for other fields here; assigned_by & assigned_date are auto-filled
                     ])
                     ->mutateFormDataBeforeAttach(function (array $data): array {

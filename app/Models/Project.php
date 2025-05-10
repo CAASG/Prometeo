@@ -17,6 +17,7 @@ class Project extends Model
         'submission_date',
         'deadline_for_corrections',
         'final_score',
+        'created_by'
     ];
 
     protected $casts = [
@@ -60,7 +61,7 @@ class Project extends Model
 
     public function statusHistory()
     {
-        return $this->hasMany(ProjectStatusHistory::class);
+        return $this->hasMany(ProjectStatusHistory::class)->orderBy('created_at', 'desc');
     }
 
     public function evaluators()
@@ -127,6 +128,20 @@ class Project extends Model
         
         return $finalScore;
     }
-        
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Get the project creator user.
+     *
+     * @deprecated Prefer createdBy() relationship method for consistency.
+     *             This attribute accessor can be removed if not used externally.
+     */
+    public function getCreatorAttribute()
+    {
+        return $this->createdBy()->first(); // Example, might need adjustment based on actual User model fields
+    }
 }

@@ -14,23 +14,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        $this->call([
-            RolesTableSeeder::class,
-            ProjectCategoriesTableSeeder::class,
-            ProjectThemesTableSeeder::class,
-            ProjectStatusesTableSeeder::class,
-            EvaluationPhasesTableSeeder::class,
-            RubricCriteriaTableSeeder::class,
-            AdminUserSeeder::class,
-        ]);
 
-        // Consider if this generic User::factory() call is still needed
-        // now that AdminUserSeeder creates a specific admin and test user.
-        // If you want other random users, keep it. Otherwise, you might remove it
-        // or make it conditional.
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $this->call([
+            RoleSeeder::class,
+            AdminUserSeeder::class,
+            UserSeeder::class, // For participant and evaluator users
+            ProjectTaxonomySeeder::class, // Categories, Themes, Statuses
+            EvaluationSetupSeeder::class, // Evaluation Phases and Rubric Criteria
+            ProjectSeeder::class, // Projects, documents, participants, evaluators
+        ]);
     }
 }

@@ -56,7 +56,7 @@ class ParticipantsRelationManager extends RelationManager
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
                         $action->getRecordSelect()
                             ->label('User')
-                            ->options(User::query()->whereHas('roles', fn (Builder $query) => $query->whereIn('name', ['participant', 'student', 'researcher']))->pluck('name', 'id'))
+                            ->options(User::query()->whereHas('roles', fn (Builder $query) => $query->where('name', 'participant'))->pluck('name', 'id'))
                             ->searchable(),
                         Toggle::make('is_director')
                             ->label('Is Director?')

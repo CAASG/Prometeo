@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('project_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->enum('document_type', ['TRL', 'Manuscript', 'Endorsement letter']);
+            $table->enum('document_type', ['TRL', 'Manuscript', 'Endorsement letter', 'Project Proposal', 'Initial Design Document']);
             $table->string('file_path');
             $table->foreignId('uploaded_by')->constrained('users')->onDelete('restrict');
             $table->timestamp('upload_date');

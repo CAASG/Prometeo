@@ -67,9 +67,58 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Propiedad para cachear los nombres de los roles una vez cargados
+    protected $roleNamesCache = null;
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    // Nuevo método para obtener los nombres de los roles cacheados
+    protected function getRoleNames()
+    {
+        if ($this->roleNamesCache === null) {
+            // Carga la relación 'roles' si aún no está cargada
+            // y luego obtén solo los nombres y guárdalos en caché.
+            // Eager load 'roles' si no está ya cargada.
+            if (!$this->relationLoaded('roles')) {
+                $this->load('roles');
+            }
+            $this->roleNamesCache = $this->roles->pluck('name')->all();
+        }
+        return $this->roleNamesCache;
+    }
+
+    public function hasRole($role)
+    {
+        // Si $role es un array, verifica si alguno de los roles existe
+        if (is_array($role)) {
+            foreach ($role as $r) {
+                if (in_array($r, $this->getRoleNames())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // Si $role es un string, verifica si ese rol existe
+        return in_array($role, $this->getRoleNames());
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isEvaluator()
+    {
+        return $this->hasRole('evaluator');
+    }
+
+    public function isParticipant()
+    {
+        return $this->hasRole('participant');
     }
 
     public function participatingProjects()
@@ -118,23 +167,13 @@ class User extends Authenticatable
         return $this->hasMany(ProjectStatusHistory::class, 'changed_by');
     }
 
-    public function hasRole($role)
+    // Importante: Si modificas los roles del usuario dinámicamente durante una petición,
+    // necesitarás una forma de invalidar o resetear $roleNamesCache.
+    // Por ejemplo, podrías tener un método:
+    public function resetRoleCache()
     {
-        return $this->roles()->where('name', $role)->exists();
-    }
-
-    public function isAdmin()
-    {
-        return $this->hasRole('admin');
-    }
-
-    public function isEvaluator()
-    {
-        return $this->hasRole('evaluator');
-    }
-
-    public function isParticipant()
-    {
-        return $this->hasRole('participant');
+        $this->roleNamesCache = null;
+        // También es buena idea descargar la relación para que se vuelva a cargar
+        $this->unsetRelation('roles');
     }
 }

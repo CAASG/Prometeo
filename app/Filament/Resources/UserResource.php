@@ -122,6 +122,6 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->orderBy('name', 'asc');
+        return parent::getEloquentQuery()->with(['roles'])->orderBy('name', 'asc');
     }
 }

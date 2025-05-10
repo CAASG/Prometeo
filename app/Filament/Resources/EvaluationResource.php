@@ -40,17 +40,14 @@ class EvaluationResource extends Resource
                     Select::make('project_id')
                         ->relationship('project', 'title')
                         ->searchable()
-                        ->preload()
                         ->required(),
                     Select::make('evaluator_id')
                         ->relationship('evaluator', 'name', fn (Builder $query) => $query->whereHas('roles', fn(Builder $q) => $q->where('name', 'evaluator')))
                         ->searchable()
-                        ->preload()
                         ->required(),
                     Select::make('evaluation_phase_id')
                         ->relationship('evaluationPhase', 'name')
                         ->searchable()
-                        ->preload()
                         ->required(),
                     DatePicker::make('evaluation_date')
                         ->native(false)
@@ -102,12 +99,10 @@ class EvaluationResource extends Resource
                 Tables\Filters\SelectFilter::make('project_id')
                     ->relationship('project', 'title')
                     ->searchable()
-                    ->preload()
                     ->label('Project'),
                 Tables\Filters\SelectFilter::make('evaluator_id')
-                    ->relationship('evaluator', 'name')
+                    ->relationship('evaluator', 'name', fn (Builder $query) => $query->whereHas('roles', fn(Builder $q) => $q->where('name', 'evaluator')))
                     ->searchable()
-                    ->preload()
                     ->label('Evaluator'),
                 Tables\Filters\TernaryFilter::make('is_completed')
                     ->label('Status')
@@ -139,5 +134,14 @@ class EvaluationResource extends Resource
         return [
             'index' => Pages\ManageEvaluations::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with([
+            'project',
+            'evaluator',
+            'evaluationPhase'
+        ]);
     }
 }
