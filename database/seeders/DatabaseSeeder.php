@@ -21,11 +21,16 @@ class DatabaseSeeder extends Seeder
             ProjectStatusesTableSeeder::class,
             EvaluationPhasesTableSeeder::class,
             RubricCriteriaTableSeeder::class,
+            AdminUserSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Consider if this generic User::factory() call is still needed
+        // now that AdminUserSeeder creates a specific admin and test user.
+        // If you want other random users, keep it. Otherwise, you might remove it
+        // or make it conditional.
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }
