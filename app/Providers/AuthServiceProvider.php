@@ -14,6 +14,14 @@ use App\Models\ProjectTheme; // Added import for ProjectTheme model
 use App\Policies\ProjectThemePolicy; // Added import for ProjectThemePolicy
 use App\Models\ProjectStatus; // Added import for ProjectStatus model
 use App\Policies\ProjectStatusPolicy; // Added import for ProjectStatusPolicy
+use App\Models\Project; // Added import for Project model
+use App\Policies\ProjectPolicy; // Added import for ProjectPolicy
+use App\Models\EvaluationPhase; // Added
+use App\Policies\EvaluationPhasePolicy; // Added
+use App\Models\RubricCriterion; // Added
+use App\Policies\RubricCriterionPolicy; // Added
+use App\Models\Evaluation; // Added
+use App\Policies\EvaluationPolicy; // Added
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -29,6 +37,10 @@ class AuthServiceProvider extends ServiceProvider
         ProjectCategory::class => ProjectCategoryPolicy::class, // Registered ProjectCategoryPolicy
         ProjectTheme::class => ProjectThemePolicy::class, // Registered ProjectThemePolicy
         ProjectStatus::class => ProjectStatusPolicy::class, // Registered ProjectStatusPolicy
+        Project::class => ProjectPolicy::class, // Registered ProjectPolicy
+        EvaluationPhase::class => EvaluationPhasePolicy::class, // Added
+        RubricCriterion::class => RubricCriterionPolicy::class, // Added
+        Evaluation::class => EvaluationPolicy::class, // Added
     ];
 
     /**

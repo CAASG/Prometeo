@@ -5,6 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 // Comment out RelationManagers for now as they are not yet created
 // use App\Filament\Resources\ProjectResource\RelationManagers;
+use App\Filament\Resources\ProjectResource\RelationManagers\ProjectDocumentsRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\ParticipantsRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\StatusHistoryRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\EvaluatorsRelationManager;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
@@ -134,6 +138,10 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
+            ProjectDocumentsRelationManager::class,
+            ParticipantsRelationManager::class,
+            StatusHistoryRelationManager::class,
+            EvaluatorsRelationManager::class,
             // RelationManagers will be added progressively
         ];
     }

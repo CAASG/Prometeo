@@ -25,8 +25,8 @@ class EvaluationScore extends Model
         return $this->belongsTo(Evaluation::class);
     }
 
-    public function rubricCriteria()
+    public function rubricCriterion()
     {
-        return $this->belongsTo(RubricCriteria::class);
+        return $this->belongsTo(RubricCriterion::class, 'rubric_criteria_id');
     }
 }
