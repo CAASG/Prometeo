@@ -114,21 +114,25 @@ class ProjectSeeder extends Seeder
             $project->themes()->sync($projectThemes);
 
             // Attach Participants
+            $participantsToSync = [];
             foreach ($data['participants_config'] as $pConfig) {
                 if (isset($participantUsers[$pConfig['user_index']])) {
-                    $project->participants()->attach($participantUsers[$pConfig['user_index']]->id, ['is_director' => $pConfig['is_director']]);
+                    $participantsToSync[$participantUsers[$pConfig['user_index']]->id] = ['is_director' => $pConfig['is_director']];
                 }
             }
+            $project->participants()->syncWithoutDetaching($participantsToSync);
 
             // Attach Evaluators
+            $evaluatorsToSync = [];
             foreach ($data['evaluators_indices'] as $evaluatorIndex) {
                 if (isset($evaluatorUsers[$evaluatorIndex])) {
-                    $project->evaluators()->attach($evaluatorUsers[$evaluatorIndex]->id, [
+                    $evaluatorsToSync[$evaluatorUsers[$evaluatorIndex]->id] = [
                         'assigned_by' => $adminUser->id,
                         'assigned_date' => Carbon::now(),
-                    ]);
+                    ];
                 }
             }
+            $project->evaluators()->syncWithoutDetaching($evaluatorsToSync);
 
             // Add a Project Document
             // Note: The ProjectObserver should handle initial status history.

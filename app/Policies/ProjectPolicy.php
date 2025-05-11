@@ -6,6 +6,7 @@ use Illuminate\Auth\Access\Response;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log; // Added for debugging
 
 class ProjectPolicy
 {
@@ -30,20 +31,24 @@ class ProjectPolicy
     public function view(User $user, Project $project): bool
     {
         if ($user->hasRole('admin')) {
+            Log::info("Policy: Admin {$user->id} viewing project {$project->id}. Allowed.");
             return true;
         }
 
-        // Placeholder for student ownership check - assumes a user_id field on project or a specific participant type
-        // This will need to be adapted based on how you define project ownership for students.
-        // Example: if ($user->hasRole('participant') && $project->participants()->where('user_id', $user->id)->wherePivot('is_creator', true)->exists()) {
+        // Permitir a los participantes ver los proyectos en los que participan
+        if ($user->isParticipant()) {
+            $isParticipantOfProject = $project->participants()->where('user_id', $user->id)->exists();
+            Log::info("Policy: Participant {$user->id} viewing project {$project->id}. Is participant of this project? " . ($isParticipantOfProject ? 'Yes' : 'No'));
+            if ($isParticipantOfProject) {
+                return true;
+            }
+        }
+
+        // Placeholder para la lógica de evaluadores (la implementaremos cuando sea necesario)
+        // if ($user->isEvaluator() && $project->evaluators()->where('user_id', $user->id)->exists()) {
         //     return true;
         // }
-
-        // Placeholder for evaluator assignment check
-        // Example: if ($user->hasRole('evaluator') && $project->evaluators()->where('user_id', $user->id)->exists()) {
-        //     return true;
-        // }
-
+        Log::warning("Policy: User {$user->id} (Roles: " . implode(', ', $user->roles->pluck('name')->all()) . ") denied viewing project {$project->id}. isParticipant check: " . ($user->isParticipant() ? 'Yes' : 'No'));
         return false; // Default to deny if no specific rule matches for non-admins
     }
 

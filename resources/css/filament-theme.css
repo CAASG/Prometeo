@@ -1,0 +1,152 @@
+/* Filament-inspired Theme Override */
+
+/* 
+  Define CSS variables for colors. 
+  These are used by tailwind.config.js to create Tailwind color classes like `bg-f-primary`.
+  They can also be used directly in CSS: `color: rgb(var(--f-primary));`
+*/
+:root {
+    --f-primary: 237, 107, 98; /* Orange/red color */
+    --f-primary-dark: 211, 88, 80;
+    --f-primary-light: 255, 128, 117;
+    --f-secondary: 55, 65, 81; /* Darker gray for secondary elements, was 35, 35, 35 */
+    --f-background: 17, 24, 39; /* Dark background */
+    --f-surface: 31, 41, 55; /* Slightly lighter background for cards, tables */
+    --f-border: 75, 85, 99; /* Border color, was implicit */
+    --f-text-white: 255, 255, 255;
+    --f-text-muted: 156, 163, 175; /* Lighter muted text for better contrast, was 255,255,255,0.7 */
+}
+
+/* Apply base background and text color */
+body {
+    background-color: rgb(var(--f-background)) !important;
+    color: rgb(var(--f-text-white)) !important;
+}
+
+/* Primary button style */
+.filament-btn-primary {
+    background-color: rgb(var(--f-primary)) !important;
+    color: rgb(var(--f-text-white)) !important;
+    border: none !important;
+}
+
+.filament-btn-primary:hover {
+    background-color: rgb(var(--f-primary-dark)) !important;
+}
+
+/* Secondary button style */
+.filament-btn-secondary {
+    background-color: rgb(var(--f-secondary)) !important;
+    color: rgb(var(--f-text-white)) !important;
+    border: 1px solid rgb(var(--f-border)) !important; /* Use defined border color */
+}
+
+.filament-btn-secondary:hover {
+    background-color: rgba(var(--f-secondary), 0.8) !important; /* Keep as is or adjust if needed */
+}
+
+/* Card style */
+.filament-card {
+    background-color: rgb(var(--f-surface)) !important;
+    border: 1px solid rgb(var(--f-border)) !important; /* Use defined border color */
+    color: rgb(var(--f-text-white)) !important;
+}
+
+/* Background colors - these can be applied with Tailwind classes e.g. bg-f-background */
+.filament-bg { /* This class might still be useful for specific overrides */
+    background-color: rgb(var(--f-background)) !important;
+    color: rgb(var(--f-text-white)) !important;
+}
+
+.filament-surface { /* This class for elements on top of the main background */
+    background-color: rgb(var(--f-surface)) !important;
+    color: rgb(var(--f-text-white)) !important;
+    border-color: rgb(var(--f-border)) !important; /* Ensure borders use the theme color */
+}
+
+/* Form controls */
+.filament-input {
+    background-color: rgba(var(--f-text-white), 0.05) !important;
+    border: 1px solid rgb(var(--f-border)) !important;
+    color: rgb(var(--f-text-white)) !important;
+}
+
+.filament-input:focus {
+    border-color: rgb(var(--f-primary)) !important;
+    box-shadow: 0 0 0 2px rgba(var(--f-primary), 0.25) !important;
+}
+
+.filament-input::placeholder {
+    color: rgb(var(--f-text-muted)) !important; /* Use muted text color */
+}
+
+/* Tables */
+.filament-table {
+    background-color: rgb(var(--f-surface)) !important;
+    color: rgb(var(--f-text-white)) !important;
+    border-collapse: collapse; /* Ensures borders are clean */
+}
+
+.filament-table th,
+.filament-table td {
+    border: 1px solid rgb(var(--f-border)) !important; /* Add borders to all cells */
+    padding: 0.75rem 1.5rem; /* Consistent padding, adjust as needed */
+}
+
+.filament-table thead th { /* Headings */
+    background-color: rgba(var(--f-secondary), 0.5) !important; /* Slightly transparent secondary */
+    color: rgb(var(--f-text-white)) !important; /* Ensure heading text is white */
+    font-weight: 600; /* Make headers bold */
+}
+
+.filament-table tbody tr:nth-child(even) {
+    background-color: rgba(var(--f-background), 0.5) !important; /* Slightly darker for even rows */
+}
+
+.filament-table tbody tr:hover {
+    background-color: rgba(var(--f-secondary), 0.3) !important; /* Hover effect */
+}
+
+
+/* Text colors - these can be applied with Tailwind classes e.g. text-f-primary */
+.filament-text-primary {
+    color: rgb(var(--f-primary)) !important;
+}
+
+.filament-text-primary:hover {
+    color: rgb(var(--f-primary-dark)) !important;
+}
+
+.filament-text-white {
+    color: rgb(var(--f-text-white)) !important;
+}
+
+.filament-text-muted {
+    color: rgb(var(--f-text-muted)) !important;
+}
+
+/* General link styling for non-button links */
+a.filament-link,
+.filament-link a,
+.filament-text-white a:not([class*="filament-btn-"]),
+.filament-text-muted a:not([class*="filament-btn-"]) {
+    color: rgb(var(--f-primary-light)) !important; /* Use a lighter primary for links */
+    text-decoration: none !important;
+}
+
+a.filament-link:hover,
+.filament-link a:hover,
+.filament-text-white a:not([class*="filament-btn-"]):hover,
+.filament-text-muted a:not([class*="filament-btn-"]):hover {
+    color: rgb(var(--f-primary)) !important;
+    text-decoration: underline !important;
+}
+
+/* Ensure .filament-text-primary applies to links correctly */
+a.filament-text-primary {
+     color: rgb(var(--f-primary)) !important;
+}
+a.filament-text-primary:hover {
+     color: rgb(var(--f-primary-dark)) !important;
+     text-decoration: underline !important;
+} 

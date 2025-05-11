@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             AdminUserSeeder::class,
+            TestDataSeeder::class, // Added for participant and evaluator users
             UserSeeder::class, // For participant and evaluator users
             ProjectTaxonomySeeder::class, // Categories, Themes, Statuses
             EvaluationSetupSeeder::class, // Evaluation Phases and Rubric Criteria

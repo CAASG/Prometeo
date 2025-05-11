@@ -9,10 +9,22 @@ export default {
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './app/Livewire/**/*.php',
+        './app/View/Components/**/*.php'
     ],
+
+    darkMode: 'class',
 
     theme: {
         extend: {
+            colors: {
+                'f-primary': 'rgb(var(--f-primary) / <alpha-value>)',
+                'f-primary-dark': 'rgb(var(--f-primary-dark) / <alpha-value>)',
+                'f-primary-light': 'rgb(var(--f-primary-light) / <alpha-value>)',
+                'f-secondary': 'rgb(var(--f-secondary) / <alpha-value>)',
+                'f-background': 'rgb(var(--f-background) / <alpha-value>)',
+                'f-surface': 'rgb(var(--f-surface) / <alpha-value>)',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
