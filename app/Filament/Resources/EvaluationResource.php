@@ -23,6 +23,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Forms\Components\Section;
+use Illuminate\Support\Facades\Auth; // Added for checking user role
+use App\Filament\Resources\EvaluationResource\Pages\CreateEvaluation; // Added for type checking
+use App\Filament\Resources\EvaluationResource\Pages\EditEvaluation; // Added for type checking
 
 class EvaluationResource extends Resource
 {
@@ -40,15 +43,33 @@ class EvaluationResource extends Resource
                     Select::make('project_id')
                         ->relationship('project', 'title')
                         ->searchable()
-                        ->required(),
+                        ->required()
+                        ->disabled(function ($livewire) {
+                            /** @var \App\Models\User $user */
+                            $user = Auth::user();
+                            return $user->hasRole('evaluator') && 
+                                   ($livewire instanceof CreateEvaluation || $livewire instanceof EditEvaluation);
+                        }),
                     Select::make('evaluator_id')
                         ->relationship('evaluator', 'name', fn (Builder $query) => $query->whereHas('roles', fn(Builder $q) => $q->where('name', 'evaluator')))
                         ->searchable()
-                        ->required(),
+                        ->required()
+                        ->disabled(function ($livewire) {
+                            /** @var \App\Models\User $user */
+                            $user = Auth::user();
+                            return $user->hasRole('evaluator') && 
+                                   ($livewire instanceof CreateEvaluation || $livewire instanceof EditEvaluation);
+                        }),
                     Select::make('evaluation_phase_id')
                         ->relationship('evaluationPhase', 'name')
                         ->searchable()
-                        ->required(),
+                        ->required()
+                        ->disabled(function ($livewire) {
+                            /** @var \App\Models\User $user */
+                            $user = Auth::user();
+                            // Disable phase if evaluator is editing, not creating
+                            return $user->hasRole('evaluator') && $livewire instanceof EditEvaluation;
+                        }),
                     DatePicker::make('evaluation_date')
                         ->native(false)
                         ->default(now()),
@@ -133,6 +154,9 @@ class EvaluationResource extends Resource
     {
         return [
             'index' => Pages\ManageEvaluations::route('/'),
+            'create' => Pages\CreateEvaluation::route('/create'),
+            'edit' => Pages\EditEvaluation::route('/{record}/edit'),
+            // 'view' => Pages\ViewEvaluation::route('/{record}'), // If we create a custom view page
         ];
     }
 

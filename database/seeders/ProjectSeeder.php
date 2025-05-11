@@ -11,6 +11,10 @@ use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
 use App\Models\ProjectTheme;
 use App\Models\ProjectDocument;
+use App\Models\Evaluation;
+use App\Models\EvaluationPhase;
+use App\Models\RubricCriterion;
+use App\Models\EvaluationScore;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
@@ -41,6 +45,7 @@ class ProjectSeeder extends Seeder
         $categories = ProjectCategory::all();
         $statuses = ProjectStatus::orderBy('sequence_order')->get(); // Get in order
         $themes = ProjectTheme::all();
+        $evaluationPhases = EvaluationPhase::where('is_active', true)->with('criteria')->get();
 
         if (!$adminUser) {
             $this->command->error('Admin user not found. Please run AdminUserSeeder.');
@@ -49,12 +54,15 @@ class ProjectSeeder extends Seeder
         if ($participantUsers->count() < 2) {
             $this->command->warn('Less than 2 participant users found. Project seeding might be limited.');
         }
-        if ($evaluatorUsers->count() < 2) {
-            $this->command->warn('Less than 2 evaluator users found. Project seeding might be limited.');
+        if ($evaluatorUsers->count() < 1) {
+            $this->command->warn('Less than 1 evaluator user found. Evaluation seeding will be skipped.');
         }
         if ($categories->isEmpty() || $statuses->isEmpty() || $themes->isEmpty()) {
             $this->command->error('Project categories, statuses, or themes not found. Please run ProjectTaxonomySeeder.');
             return;
+        }
+        if ($evaluationPhases->isEmpty()) {
+            $this->command->warn('No active evaluation phases found. Evaluation seeding will be limited.');
         }
 
         $initialStatus = $statuses->firstWhere('sequence_order', 1) ?? $statuses->first(); // e.g., 'Proposal Submitted'
@@ -72,7 +80,9 @@ class ProjectSeeder extends Seeder
                     ['user_index' => 0, 'is_director' => true],
                 ],
                 'evaluators_indices' => [0], // Index for $evaluatorUsers
-                'document_type' => 'Project Proposal'
+                'document_type' => 'Project Proposal',
+                'seed_evaluation' => true,
+                'evaluation_completed' => true
             ],
             [
                 'title' => 'IoT-Based Smart Irrigation System',
@@ -86,7 +96,23 @@ class ProjectSeeder extends Seeder
                     ['user_index' => 2, 'is_director' => false], // Add a second participant
                 ],
                 'evaluators_indices' => [1],
-                'document_type' => 'Initial Design Document'
+                'document_type' => 'Initial Design Document',
+                'seed_evaluation' => false,
+            ],
+            [
+                'title' => 'Renewable Energy Storage Solutions',
+                'description' => 'Research and development of innovative battery technologies for renewable energy storage.',
+                'created_by_user_index' => 0,
+                'category_index' => 1,
+                'status_id' => $initialStatus->id,
+                'themes_indices' => [1, 5],
+                'participants_config' => [
+                    ['user_index' => 0, 'is_director' => true],
+                ],
+                'evaluators_indices' => [0],
+                'document_type' => 'Project Proposal',
+                'seed_evaluation' => true,
+                'evaluation_completed' => false
             ],
         ];
 
@@ -123,16 +149,19 @@ class ProjectSeeder extends Seeder
             $project->participants()->syncWithoutDetaching($participantsToSync);
 
             // Attach Evaluators
-            $evaluatorsToSync = [];
+            $currentProjectEvaluators = [];
             foreach ($data['evaluators_indices'] as $evaluatorIndex) {
                 if (isset($evaluatorUsers[$evaluatorIndex])) {
-                    $evaluatorsToSync[$evaluatorUsers[$evaluatorIndex]->id] = [
-                        'assigned_by' => $adminUser->id,
-                        'assigned_date' => Carbon::now(),
-                    ];
+                    $evaluator = $evaluatorUsers[$evaluatorIndex];
+                    $currentProjectEvaluators[] = $evaluator;
+                    $project->evaluators()->syncWithoutDetaching([
+                        $evaluator->id => [
+                            'assigned_by' => $adminUser->id,
+                            'assigned_date' => Carbon::now(),
+                        ]
+                    ]);
                 }
             }
-            $project->evaluators()->syncWithoutDetaching($evaluatorsToSync);
 
             // Add a Project Document
             // Note: The ProjectObserver should handle initial status history.
@@ -144,6 +173,34 @@ class ProjectSeeder extends Seeder
                 'uploaded_by' => $creator->id,
                 'upload_date' => Carbon::now(),
             ]);
+
+            // Seed Evaluation if flagged and evaluator exists
+            if ($data['seed_evaluation'] && !empty($currentProjectEvaluators) && !$evaluationPhases->isEmpty()) {
+                $assignedEvaluator = $currentProjectEvaluators[0];
+                $evaluationPhaseForSeeding = $evaluationPhases->first();
+
+                if ($evaluationPhaseForSeeding && $evaluationPhaseForSeeding->criteria->isNotEmpty()) {
+                    $evaluation = Evaluation::create([
+                        'project_id' => $project->id,
+                        'evaluator_id' => $assignedEvaluator->id,
+                        'evaluation_phase_id' => $evaluationPhaseForSeeding->id,
+                        'comments' => $data['evaluation_completed'] ? 'This evaluation was auto-seeded as completed.' : 'This evaluation was auto-seeded as pending.',
+                        'is_completed' => $data['evaluation_completed'],
+                        'evaluation_date' => Carbon::now()->subDays(rand(1, 5)),
+                    ]);
+
+                    foreach ($evaluationPhaseForSeeding->criteria as $criterion) {
+                        EvaluationScore::create([
+                            'evaluation_id' => $evaluation->id,
+                            'rubric_criteria_id' => $criterion->id,
+                            'score' => $data['evaluation_completed'] ? rand( (int)($criterion->max_score * 0.6), (int)$criterion->max_score) : rand(0, (int)($criterion->max_score * 0.5) ),
+                            'comments' => 'Auto-seeded score for criterion: ' . $criterion->name,
+                        ]);
+                    }
+                    $evaluation->calculateTotalScore();
+                    $this->command->info("Seeded evaluation for project: {$project->title} by {$assignedEvaluator->name}");
+                }
+            }
             $this->command->info("Seeded project: {$project->title}");
         }
         $this->command->info('ProjectSeeder completed.');

@@ -5,6 +5,7 @@ namespace App\Policies;
 use Illuminate\Auth\Access\Response;
 use App\Models\Evaluation;
 use App\Models\User;
+use App\Models\Project;
 
 class EvaluationPolicy
 {
@@ -24,6 +25,9 @@ class EvaluationPolicy
         if ($user->hasRole('admin')) {
             return true;
         }
+        if ($user->hasRole('evaluator') && $evaluation->evaluator_id === $user->id) {
+            return true;
+        }
         return false;
     }
 
@@ -32,7 +36,7 @@ class EvaluationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') || $user->hasRole('evaluator');
     }
 
     /**
@@ -41,6 +45,9 @@ class EvaluationPolicy
     public function update(User $user, Evaluation $evaluation): bool
     {
         if ($user->hasRole('admin')) {
+            return true;
+        }
+        if ($user->hasRole('evaluator') && $evaluation->evaluator_id === $user->id) {
             return true;
         }
         return false;

@@ -23,9 +23,9 @@ class EvaluationPhase extends Model
         'is_active' => 'boolean',
     ];
 
-    public function rubricCriteria()
+    public function criteria()
     {
-        return $this->hasMany(RubricCriteria::class);
+        return $this->hasMany(RubricCriterion::class);
     }
 
     public function evaluations()
