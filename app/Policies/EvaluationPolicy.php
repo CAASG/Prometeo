@@ -14,7 +14,7 @@ class EvaluationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') || $user->hasRole('evaluator');
     }
 
     /**
@@ -44,9 +44,11 @@ class EvaluationPolicy
      */
     public function update(User $user, Evaluation $evaluation): bool
     {
+        // Original logic:
         if ($user->hasRole('admin')) {
             return true;
         }
+        
         if ($user->hasRole('evaluator') && $evaluation->evaluator_id === $user->id) {
             return true;
         }

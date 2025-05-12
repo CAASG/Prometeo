@@ -76,6 +76,53 @@
                             @error('document') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
                         </div>
 
+                        <!-- Participants Management -->
+                        <div class="mb-6">
+                            <label class="block mb-2 text-sm font-medium filament-text-white">Project Participants</label>
+                            <!-- Add by Email -->
+                            <div class="flex items-center mb-2 space-x-2">
+                                <input type="email" wire:model.defer="participantEmail" placeholder="Add by email..." class="flex-1 rounded-md shadow-sm filament-input focus:ring focus:ring-opacity-50">
+                                <button type="button" wire:click="addParticipantByEmail" class="px-3 py-1 text-xs font-semibold text-white rounded bg-primary-600 hover:bg-primary-700">Add</button>
+                            </div>
+                            @error('participantEmail') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+
+                            <!-- Add by Select -->
+                            <div class="flex items-center mb-2 space-x-2">
+                                <select wire:model.defer="selectedParticipantId" class="flex-1 rounded-md shadow-sm filament-input focus:ring focus:ring-opacity-50">
+                                    <option value="">Select participant...</option>
+                                    @foreach ($allParticipantUsers as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                    @endforeach
+                                </select>
+                                <button type="button" wire:click="addParticipantBySelect" class="px-3 py-1 text-xs font-semibold text-white rounded bg-primary-600 hover:bg-primary-700">Add</button>
+                            </div>
+                            @error('selectedParticipantId') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+
+                            <!-- Participants List -->
+                            <ul class="mt-4 space-y-2">
+                                @foreach ($participants as $p)
+                                    <li class="flex items-center justify-between p-2 bg-gray-800 rounded">
+                                        <div>
+                                            <span class="font-semibold">{{ $p['name'] }}</span>
+                                            <span class="ml-2 text-xs text-gray-400">{{ $p['email'] }}</span>
+                                            @if ($p['is_director'])
+                                                <span class="ml-2 px-2 py-0.5 text-xs bg-blue-600 text-white rounded">Director</span>
+                                            @endif
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            @if (!$p['is_director'])
+                                                <button type="button" wire:click="makeDirector({{ $p['id'] }})" class="px-2 py-0.5 text-xs bg-blue-500 text-white rounded hover:bg-blue-700">Make Director</button>
+                                            @endif
+                                            @if (count($participants) > 1)
+                                                <button type="button" wire:click="removeParticipant({{ $p['id'] }})" class="px-2 py-0.5 text-xs bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
+                                            @endif
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            @error('participants') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+                        </div>
+
                         <!-- Submit Button -->
                         <div class="flex items-center justify-end mt-6">
                             <button type="submit" wire:loading.attr="disabled" class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition rounded-md filament-btn-primary hover:bg-opacity-90 focus:outline-none focus:ring focus:ring-opacity-50 disabled:opacity-50">

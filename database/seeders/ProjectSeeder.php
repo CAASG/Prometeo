@@ -18,6 +18,7 @@ use App\Models\EvaluationScore;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Illuminate\Support\Arr;
 
 class ProjectSeeder extends Seeder
 {
@@ -40,10 +41,23 @@ class ProjectSeeder extends Seeder
         // Fetch Prerequisite Data
         $adminUser = User::whereHas('roles', fn ($query) => $query->where('name', 'admin'))->first();
         $participantUsers = User::whereHas('roles', fn ($query) => $query->where('name', 'participant'))->take(3)->get();
-        $evaluatorUsers = User::whereHas('roles', fn ($query) => $query->where('name', 'evaluator'))->take(2)->get();
+
+        // Fetch specific evaluators for consistent assignment
+        $evaluatorTestUser = User::where('email', 'evaluator@prometeo.test')->first();
+        $otherEvaluator = User::whereHas('roles', fn ($query) => $query->where('name', 'evaluator'))
+                                ->where('email', '!=', 'evaluator@prometeo.test')
+                                ->first();
+
+        $targetEvaluators = [];
+        if ($evaluatorTestUser) {
+            $targetEvaluators[] = $evaluatorTestUser;
+        }
+        if ($otherEvaluator) {
+            $targetEvaluators[] = $otherEvaluator;
+        }
 
         $categories = ProjectCategory::all();
-        $statuses = ProjectStatus::orderBy('sequence_order')->get(); // Get in order
+        $statuses = ProjectStatus::orderBy('sequence_order')->get();
         $themes = ProjectTheme::all();
         $evaluationPhases = EvaluationPhase::where('is_active', true)->with('criteria')->get();
 
@@ -54,8 +68,9 @@ class ProjectSeeder extends Seeder
         if ($participantUsers->count() < 2) {
             $this->command->warn('Less than 2 participant users found. Project seeding might be limited.');
         }
-        if ($evaluatorUsers->count() < 1) {
-            $this->command->warn('Less than 1 evaluator user found. Evaluation seeding will be skipped.');
+        // Use count($targetEvaluators) for checks now
+        if (count($targetEvaluators) < 1) {
+            $this->command->warn('Target evaluator(s) not found. Evaluation seeding will be skipped or limited.');
         }
         if ($categories->isEmpty() || $statuses->isEmpty() || $themes->isEmpty()) {
             $this->command->error('Project categories, statuses, or themes not found. Please run ProjectTaxonomySeeder.');
@@ -65,21 +80,21 @@ class ProjectSeeder extends Seeder
             $this->command->warn('No active evaluation phases found. Evaluation seeding will be limited.');
         }
 
-        $initialStatus = $statuses->firstWhere('sequence_order', 1) ?? $statuses->first(); // e.g., 'Proposal Submitted'
-        $inProgressStatus = $statuses->firstWhere('sequence_order', 4) ?? $statuses->first(); // e.g., 'In Progress'
+        $initialStatus = $statuses->firstWhere('sequence_order', 1) ?? $statuses->first();
+        $inProgressStatus = $statuses->firstWhere('sequence_order', 4) ?? $statuses->first();
 
         $projectsData = [
             [
                 'title' => 'AI-Powered Academic Advisor Bot',
                 'description' => 'A chatbot to assist students with course selection and academic planning using AI.',
-                'created_by_user_index' => 0, // Index for $participantUsers
-                'category_index' => 0, // Index for $categories (Software Development)
+                'created_by_user_index' => 0,
+                'category_index' => 0,
                 'status_id' => $initialStatus->id,
-                'themes_indices' => [0, 3], // AI, Data Science
+                'themes_indices' => [0, 3],
                 'participants_config' => [
                     ['user_index' => 0, 'is_director' => true],
                 ],
-                'evaluators_indices' => [0], // Index for $evaluatorUsers
+                'evaluator_target_indices' => [0], // Index for $targetEvaluators (should be evaluator@prometeo.test)
                 'document_type' => 'Project Proposal',
                 'seed_evaluation' => true,
                 'evaluation_completed' => true
@@ -87,17 +102,18 @@ class ProjectSeeder extends Seeder
             [
                 'title' => 'IoT-Based Smart Irrigation System',
                 'description' => 'Developing a smart irrigation system using IoT sensors for efficient water management in agriculture.',
-                'created_by_user_index' => 1, // Index for $participantUsers
-                'category_index' => 2, // Index for $categories (Hardware Design)
+                'created_by_user_index' => 1,
+                'category_index' => 2,
                 'status_id' => $inProgressStatus->id,
-                'themes_indices' => [2, 4], // Mobile App (for control), IoT
+                'themes_indices' => [2, 4],
                 'participants_config' => [
                     ['user_index' => 1, 'is_director' => true],
-                    ['user_index' => 2, 'is_director' => false], // Add a second participant
+                    ['user_index' => 2, 'is_director' => false],
                 ],
-                'evaluators_indices' => [1],
+                // Assign to the second target evaluator if available, otherwise fallback or skip
+                'evaluator_target_indices' => count($targetEvaluators) > 1 ? [1] : (count($targetEvaluators) > 0 ? [0] : []),
                 'document_type' => 'Initial Design Document',
-                'seed_evaluation' => false,
+                'seed_evaluation' => false, 
             ],
             [
                 'title' => 'Renewable Energy Storage Solutions',
@@ -109,7 +125,7 @@ class ProjectSeeder extends Seeder
                 'participants_config' => [
                     ['user_index' => 0, 'is_director' => true],
                 ],
-                'evaluators_indices' => [0],
+                'evaluator_target_indices' => [0], // Index for $targetEvaluators (evaluator@prometeo.test)
                 'document_type' => 'Project Proposal',
                 'seed_evaluation' => true,
                 'evaluation_completed' => false
@@ -130,16 +146,14 @@ class ProjectSeeder extends Seeder
                     'project_category_id' => $categories[$data['category_index']]->id,
                     'project_status_id' => $data['status_id'],
                     'submission_date' => Carbon::now()->subDays(rand(5, 30)),
-                    'created_by' => $creator->id, // Assigning project creator
-                    'final_score' => null, // Changed from 'score'
+                    'created_by' => $creator->id,
+                    'final_score' => null,
                 ]
             );
 
-            // Attach Themes
             $projectThemes = $themes->collect()->only($data['themes_indices'])->pluck('id');
             $project->themes()->sync($projectThemes);
 
-            // Attach Participants
             $participantsToSync = [];
             foreach ($data['participants_config'] as $pConfig) {
                 if (isset($participantUsers[$pConfig['user_index']])) {
@@ -148,11 +162,11 @@ class ProjectSeeder extends Seeder
             }
             $project->participants()->syncWithoutDetaching($participantsToSync);
 
-            // Attach Evaluators
             $currentProjectEvaluators = [];
-            foreach ($data['evaluators_indices'] as $evaluatorIndex) {
-                if (isset($evaluatorUsers[$evaluatorIndex])) {
-                    $evaluator = $evaluatorUsers[$evaluatorIndex];
+            // Use $targetEvaluators for assignment
+            foreach ($data['evaluator_target_indices'] as $evaluatorTargetIndex) {
+                if (isset($targetEvaluators[$evaluatorTargetIndex])) {
+                    $evaluator = $targetEvaluators[$evaluatorTargetIndex];
                     $currentProjectEvaluators[] = $evaluator;
                     $project->evaluators()->syncWithoutDetaching([
                         $evaluator->id => [
@@ -162,9 +176,7 @@ class ProjectSeeder extends Seeder
                     ]);
                 }
             }
-
-            // Add a Project Document
-            // Note: The ProjectObserver should handle initial status history.
+            
             $storedFilePath = Storage::disk('public')->putFile('project_documents', new File($dummyFilePath));
             ProjectDocument::create([
                 'project_id' => $project->id,
@@ -174,7 +186,6 @@ class ProjectSeeder extends Seeder
                 'upload_date' => Carbon::now(),
             ]);
 
-            // Seed Evaluation if flagged and evaluator exists
             if ($data['seed_evaluation'] && !empty($currentProjectEvaluators) && !$evaluationPhases->isEmpty()) {
                 $assignedEvaluator = $currentProjectEvaluators[0];
                 $evaluationPhaseForSeeding = $evaluationPhases->first();

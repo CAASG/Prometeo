@@ -36,8 +36,16 @@ class ScoresRelationManager extends RelationManager
                         if (!$evaluation || !$evaluation->evaluation_phase_id) {
                             return [];
                         }
+                        // Obtener los criterios ya calificados
+                        $usedCriteriaIds = $evaluation->scores()->pluck('rubric_criteria_id')->toArray();
+                        // Si estamos editando, incluir el criterio actual
+                        $currentCriterionId = $get('rubric_criteria_id');
+                        if ($currentCriterionId) {
+                            $usedCriteriaIds = array_diff($usedCriteriaIds, [$currentCriterionId]);
+                        }
                         return RubricCriterion::where('evaluation_phase_id', $evaluation->evaluation_phase_id)
                             ->where('is_active', true)
+                            ->whereNotIn('id', $usedCriteriaIds)
                             ->pluck('name', 'id');
                     })
                     ->reactive()

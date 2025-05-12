@@ -31,6 +31,12 @@ class Project extends Model
         return $this->belongsTo(ProjectCategory::class, 'project_category_id');
     }
 
+    public function projectStatus()
+    {
+        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+    }
+
+    // Alias para compatibilidad
     public function status()
     {
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');

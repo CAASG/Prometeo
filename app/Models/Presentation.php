@@ -15,6 +15,7 @@ class Presentation extends Model
         'scheduled_date',
         'start_time',
         'end_time',
+        'notes',
     ];
 
     protected $casts = [
