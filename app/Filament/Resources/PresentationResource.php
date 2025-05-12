@@ -23,7 +23,21 @@ class PresentationResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('project_id')
+                    ->relationship('project', 'title')
+                    ->searchable()
+                    ->required(),
+                Forms\Components\TextInput::make('location')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('scheduled_date')
+                    ->required(),
+                Forms\Components\TimePicker::make('start_time')
+                    ->required(),
+                Forms\Components\TimePicker::make('end_time')
+                    ->required(),
+                Forms\Components\Textarea::make('notes')
+                    ->maxLength(1000),
             ]);
     }
 
@@ -31,7 +45,23 @@ class PresentationResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('project.title')
+                    ->label('Project')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('scheduled_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('start_time')
+                    ->time('H:i')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_time')
+                    ->time('H:i')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('location')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('notes')
+                    ->limit(40)
+                    ->toggleable(),
             ])
             ->filters([
                 //
