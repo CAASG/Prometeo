@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB; // For transactions
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Layout; // Import the Layout attribute
 
+#[Layout('layouts.app')] // Specify the layout using an attribute
 class ProjectSubmissionForm extends Component
 {
     use WithFileUploads;

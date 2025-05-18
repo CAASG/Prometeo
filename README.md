@@ -22,6 +22,74 @@ Prometeo es una plataforma web desarrollada para gestionar encuentros académico
 - 📊 Dashboard administrativo
 - 🏆 Generación de certificados
 
+## 📂 Estructura del Proyecto
+
+```
+.
+├── app/
+│   ├── Actions/        # Acciones de Fortify/Jetstream
+│   ├── Filament/       # Recursos, Páginas y Widgets de Filament
+│   ├── Helpers/        # Clases de ayuda personalizadas
+│   ├── Http/
+│   │   └── Controllers/ # Controladores HTTP
+│   ├── Livewire/       # Componentes de Livewire
+│   ├── Models/         # Modelos Eloquent
+│   ├── Observers/      # Observadores de Modelos
+│   ├── Policies/       # Políticas de Autorización
+│   ├── Providers/      # Proveedores de Servicios (AuthServiceProvider, RouteServiceProvider, etc.)
+│   └── View/           # View Composers, Components
+├── bootstrap/
+│   └── cache/          # Archivos de caché generados por el framework
+├── config/             # Archivos de configuración (app, auth, database, etc.)
+├── database/
+│   ├── factories/      # Factorías de modelos para testing y seeding
+│   ├── migrations/     # Migraciones de base deatos
+│   └── seeders/        # Seeders de base de datos
+├── public/             # Directorio raíz público (assets compilados, index.php)
+│   ├── build/          # Assets compilados por Vite
+│   ├── css/
+│   ├── images/
+│   ├── js/
+│   └── storage/        # Enlace simbólico a storage/app/public
+├── resources/
+│   ├── css/            # Archivos CSS fuente (app.css)
+│   ├── js/             # Archivos JavaScript fuente (app.js)
+│   ├── markdown/       # Vistas de correo en Markdown
+│   └── views/          # Vistas Blade
+│       ├── auth/         # Vistas de autenticación (login, register, etc.)
+│       ├── components/   # Componentes Blade anónimos
+│       ├── emails/       # Plantillas de correo electrónico
+│       ├── filament/     # Vistas personalizadas para Filament
+│       ├── layouts/      # Plantillas de layout (app.blade.php, guest.blade.php)
+│       ├── livewire/     # Vistas para componentes Livewire
+│       ├── profile/      # Vistas de perfil de usuario de Jetstream
+│       └── projects/     # Vistas relacionadas con proyectos
+├── routes/             # Definiciones de rutas (web.php, api.php, console.php)
+├── storage/            # Almacenamiento (logs, uploads, cache, etc.)
+│   ├── app/
+│   │   └── public/     # Archivos accesibles públicamente (enlazados desde public/storage)
+│   ├── framework/
+│   └── logs/
+├── tests/              # Pruebas automatizadas
+│   ├── Feature/        # Pruebas de funcionalidad
+│   └── Unit/           # Pruebas unitarias
+├── vendor/             # Dependencias de Composer
+├── .editorconfig       # Configuración del editor
+├── .env.example        # Ejemplo de variables de entorno
+├── .gitattributes      # Atributos de Git
+├── .gitignore          # Archivos/directorios ignorados por Git
+├── artisan             # Script de línea de comandos Artisan
+├── composer.json       # Dependencias PHP (Composer)
+├── composer.lock       # Versiones exactas de dependencias PHP
+├── package.json        # Dependencias JavaScript (npm/yarn)
+├── package-lock.json   # Versiones exactas de dependencias JavaScript
+├── phpunit.xml         # Configuración de PHPUnit
+├── postcss.config.js   # Configuración de PostCSS
+├── README.md           # Este archivo
+├── tailwind.config.js  # Configuración de TailwindCSS
+└── vite.config.js      # Configuración de Vite
+```
+
 ## 📋 Requisitos del Sistema
 
 <table>
